@@ -1,4 +1,4 @@
-package com.example.mohitekacareassignment.presentation
+package com.example.mohitekacareassignment.presentation.core
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -18,6 +18,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.util.fastForEachIndexed
+import com.example.mohitekacareassignment.presentation.home.HomeScreen
+import com.example.mohitekacareassignment.presentation.saved.SavedScreen
 
 @Composable
 fun MainScreen(modifier: Modifier = Modifier) {

@@ -1,4 +1,4 @@
-package com.example.mohitekacareassignment.presentation.theme
+package com.example.mohitekacareassignment.presentation.core.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

@@ -1,4 +1,4 @@
-package com.example.mohitekacareassignment.presentation
+package com.example.mohitekacareassignment.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -11,15 +11,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun SavedScreen(modifier: Modifier = Modifier) {
+fun HomeScreen(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.fillMaxSize()
-            .background(Color(0xFFA9FFAA)),
+            .background(Color(0xFFFFA9A9)),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
-            text = "Saved",
+            text = "Home Page",
             color = Color.Black
         )
     }
