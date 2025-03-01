@@ -1,4 +1,4 @@
-package com.example.mohitekacareassignment.ui.theme
+package com.example.mohitekacareassignment.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
