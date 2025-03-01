@@ -18,11 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.util.fastForEachIndexed
+import com.example.mohitekacareassignment.domain.model.Article
 import com.example.mohitekacareassignment.presentation.home.HomeScreen
 import com.example.mohitekacareassignment.presentation.saved.SavedScreen
 
 @Composable
-fun MainScreen(modifier: Modifier = Modifier) {
+fun MainScreen(tempArticles: List<Article>, modifier: Modifier = Modifier) {
 
     val navBarItems = listOf(
         NavBarItem("Home", Icons.Default.Home),
@@ -50,17 +51,17 @@ fun MainScreen(modifier: Modifier = Modifier) {
                 }
             }
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier.fillMaxSize()
     ) { innerPadding ->
-        ContentScreen(modifier = Modifier.padding(innerPadding), selectedIndex)
+        ContentScreen(tempArticles, modifier = Modifier.padding(innerPadding), selectedIndex)
     }
 }
 
 @Composable
-fun ContentScreen(modifier: Modifier = Modifier, selectedIndex: Int = 0) {
+fun ContentScreen(tempArticles: List<Article>, modifier: Modifier = Modifier, selectedIndex: Int = 0) {
     when(selectedIndex) {
-        0 -> HomeScreen()
-        1 -> SavedScreen()
+        0 -> HomeScreen(tempArticles, modifier)
+        1 -> SavedScreen(modifier)
     }
 }
 

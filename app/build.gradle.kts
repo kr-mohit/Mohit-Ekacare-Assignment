@@ -68,4 +68,10 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
+
+    // Glide
+    implementation(libs.compose)
+
+    // Constraint Layout
+    implementation(libs.androidx.constraintlayout.compose)
 }
