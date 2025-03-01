@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
+    kotlin("plugin.serialization") version "2.0.20"
 }
 
 android {
@@ -74,4 +75,8 @@ dependencies {
 
     // Constraint Layout
     implementation(libs.androidx.constraintlayout.compose)
+
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.kotlinx.serialization.json)
 }
