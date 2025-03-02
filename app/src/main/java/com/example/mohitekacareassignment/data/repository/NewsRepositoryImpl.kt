@@ -11,13 +11,13 @@ class NewsRepositoryImpl @Inject constructor(
     private val newsAPI: NewsAPI
 ): NewsRepository {
 
-    override suspend fun getAllNews(): Response<List<Article>> {
+    override suspend fun getHomeNews(): Response<List<Article>> {
         return try {
-            val response = newsAPI.getAllNews()
+            val response = newsAPI.getHomeNews()
             if (response.isSuccessful) {
                 Response.Success(response.body()?.articles?.map { it.toDomainArticle() })
             } else {
-                Response.Error(response.message())
+                Response.Error(response.errorBody()?.string())
             }
         } catch (e: Exception) {
             Response.Error(e.message)

@@ -10,5 +10,6 @@ object SavedScreen
 
 @Serializable
 data class WebViewScreen(
-    val articleUrl: String
+    val article: String,
+    val isSaved: Boolean
 )

@@ -5,5 +5,5 @@ import com.example.mohitekacareassignment.utils.Response
 
 interface NewsRepository {
 
-    suspend fun getAllNews(): Response<List<Article>>
+    suspend fun getHomeNews(): Response<List<Article>>
 }
