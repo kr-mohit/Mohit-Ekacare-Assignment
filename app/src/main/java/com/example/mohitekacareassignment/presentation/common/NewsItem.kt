@@ -7,8 +7,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,7 +38,6 @@ fun NewsItem(
         modifier = modifier
             .padding(8.dp)
             .fillMaxWidth()
-            .aspectRatio(3F)
             .border(
                 width = 1.dp,
                 color = Color.Gray,
@@ -46,7 +48,7 @@ fun NewsItem(
             modifier = modifier
                 .fillMaxSize()
         ) {
-            val (image, heading, description, readMore) = createRefs()
+            val (image, saveIcon, heading, description, readMore) = createRefs()
 
             GlideImage(
                 model = newsArticle.urlToImage,
@@ -55,44 +57,56 @@ fun NewsItem(
                 alignment = Alignment.Center,
                 modifier = modifier
                     .background(Color(0xFFFFE895))
-                    .aspectRatio(1F)
+                    .aspectRatio(2F)
                     .constrainAs(image) {
                         start.linkTo(parent.start)
+                        end.linkTo(parent.end)
                         top.linkTo(parent.top)
-                        bottom.linkTo(parent.bottom)
-                        height = Dimension.fillToConstraints
+                        width = Dimension.fillToConstraints
+                        height = Dimension.wrapContent
                     }
             )
+            if (newsArticle.isSaved) {
+                Icon(
+                    imageVector = Icons.Filled.Star,
+                    contentDescription = "Save",
+                    tint = Color.Yellow,
+                    modifier = modifier
+                        .padding(10.dp)
+                        .constrainAs(saveIcon) {
+                            top.linkTo(parent.top)
+                            start.linkTo(parent.start)
+                            width = Dimension.wrapContent
+                            height = Dimension.wrapContent
+                        }
+                )
+            }
             Text(
                 text = newsArticle.title,
                 style = MaterialTheme.typography.titleMedium,
-                minLines = 2,
-                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
                 modifier = modifier
-                    .padding(10.dp)
+                    .padding(start = 10.dp, end = 10.dp, top = 10.dp)
                     .constrainAs(heading) {
-                        top.linkTo(image.top)
-                        start.linkTo(image.end)
-                        end.linkTo(parent.end)
+                        top.linkTo(image.bottom)
+                        start.linkTo(image.start)
+                        end.linkTo(image.end)
                         width = Dimension.fillToConstraints
+                        height = Dimension.wrapContent
                     }
             )
             Text(
                 text = newsArticle.description,
                 style = MaterialTheme.typography.bodyMedium.copy(color = Color.Gray),
-                minLines = 3,
-                maxLines = 3,
                 overflow = TextOverflow.Ellipsis,
                 modifier = modifier
-                    .padding(10.dp, 0.dp)
+                    .padding(start = 10.dp, end = 10.dp, top = 10.dp)
                     .constrainAs(description) {
-                        start.linkTo(image.end)
-                        end.linkTo(parent.end)
+                        start.linkTo(heading.start)
+                        end.linkTo(heading.end)
                         top.linkTo(heading.bottom)
-                        bottom.linkTo(readMore.top)
                         width = Dimension.fillToConstraints
-                        height = Dimension.fillToConstraints
+                        height = Dimension.wrapContent
                     }
             )
             Text(
@@ -102,8 +116,9 @@ fun NewsItem(
                     .padding(10.dp)
                     .constrainAs(readMore) {
                         end.linkTo(parent.end)
-                        bottom.linkTo(parent.bottom)
+                        top.linkTo(description.bottom)
                         width = Dimension.wrapContent
+                        height = Dimension.wrapContent
                     }
                     .clickable { onReadMoreClick(newsArticle) }
             )
