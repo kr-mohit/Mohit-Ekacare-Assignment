@@ -20,6 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -40,16 +41,21 @@ fun HomeScreen(navController: NavHostController, viewModel: NewsViewModel, modif
     when(response.value) {
         is Response.Error -> {
             Column(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize()
+                    .padding(20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(text = response.value?.error ?: "Something Went Wrong")
+                Text(
+                    text = response.value?.error ?: "Something Went Wrong",
+                    textAlign = TextAlign.Center
+                )
             }
         }
         is Response.Loading -> {
             Column(
-                modifier = modifier.fillMaxSize(),
+                modifier = modifier.fillMaxSize()
+                    .padding(20.dp),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
@@ -63,7 +69,8 @@ fun HomeScreen(navController: NavHostController, viewModel: NewsViewModel, modif
         is Response.Success -> {
             if (response.value == null) {
                 Column(
-                    modifier = modifier.fillMaxSize(),
+                    modifier = modifier.fillMaxSize()
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -74,7 +81,8 @@ fun HomeScreen(navController: NavHostController, viewModel: NewsViewModel, modif
             val articles = response.value!!.data
             if (articles.isNullOrEmpty()) {
                 Column(
-                    modifier = modifier.fillMaxSize(),
+                    modifier = modifier.fillMaxSize()
+                        .padding(20.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -90,7 +98,7 @@ fun HomeScreen(navController: NavHostController, viewModel: NewsViewModel, modif
                 LazyColumn(
                     modifier = modifier
                         .fillMaxSize()
-                        .padding(10.dp),
+                        .padding(20.dp, 0.dp),
                 ) {
                     items(articles) { article ->
                         NewsItem(

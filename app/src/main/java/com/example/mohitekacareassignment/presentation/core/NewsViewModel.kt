@@ -20,11 +20,7 @@ class NewsViewModel @Inject constructor(
     private val _articles = MutableLiveData<Response<List<Article>>>()
     val articles: LiveData<Response<List<Article>>> = _articles
 
-    init {
-        getHomeNews()
-    }
-
-    private fun getHomeNews() = viewModelScope.launch {
+    fun getHomeNews() = viewModelScope.launch {
         _articles.postValue(Response.Loading())
         newsRepository.getHomeNews().also {
             _articles.postValue(it)
@@ -33,5 +29,9 @@ class NewsViewModel @Inject constructor(
 
     fun onSaveClick(article: String) {
         Log.d("mohit", "SaveClick")
+    }
+
+    fun onNoInternet() {
+        _articles.postValue(Response.Error("No Internet\nProceed to Saved Articles"))
     }
 }

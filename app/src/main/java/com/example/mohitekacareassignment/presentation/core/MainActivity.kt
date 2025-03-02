@@ -31,6 +31,7 @@ import com.example.mohitekacareassignment.presentation.core.theme.MohitEkaCareAs
 import com.example.mohitekacareassignment.presentation.core.webview.WebViewScreen
 import com.example.mohitekacareassignment.presentation.home.HomeScreen
 import com.example.mohitekacareassignment.presentation.saved.SavedScreen
+import com.example.mohitekacareassignment.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +41,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
 
         val viewModel: NewsViewModel by viewModels()
+        if (Utils.isUserOnline(this)) {
+            viewModel.getHomeNews()
+        } else {
+            viewModel.onNoInternet()
+        }
 
         setContent {
             MohitEkaCareAssignmentTheme {
