@@ -16,7 +16,7 @@ import com.example.mohitekacareassignment.presentation.common.CenterLoader
 import com.example.mohitekacareassignment.presentation.common.CenterText
 import com.example.mohitekacareassignment.presentation.common.NewsItem
 import com.example.mohitekacareassignment.presentation.core.NewsViewModel
-import com.example.mohitekacareassignment.presentation.core.WebViewScreen
+import com.example.mohitekacareassignment.presentation.core.WebViewRoute
 import com.example.mohitekacareassignment.utils.Response
 
 @Composable
@@ -55,7 +55,7 @@ fun SavedScreen(navController: NavHostController, viewModel: NewsViewModel, modi
                         NewsItem(
                             newsArticle = article,
                             onReadMoreClick = { newsArticle ->
-                                navController.navigate(WebViewScreen(newsArticle.url, newsArticle.isSaved))
+                                navController.navigate(WebViewRoute(newsArticle))
                             }
                         )
                     }

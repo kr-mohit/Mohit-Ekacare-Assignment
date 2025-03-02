@@ -27,12 +27,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.example.mohitekacareassignment.domain.model.Article
 import com.example.mohitekacareassignment.presentation.core.theme.MohitEkaCareAssignmentTheme
 import com.example.mohitekacareassignment.presentation.core.webview.WebViewScreen
 import com.example.mohitekacareassignment.presentation.home.HomeScreen
 import com.example.mohitekacareassignment.presentation.saved.SavedScreen
+import com.example.mohitekacareassignment.utils.CustomNavType
 import com.example.mohitekacareassignment.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlin.reflect.typeOf
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -42,11 +45,11 @@ class MainActivity : ComponentActivity() {
 
         val viewModel: NewsViewModel by viewModels()
         if (Utils.isUserOnline(this)) {
-            viewModel.getHomeNews()
+            viewModel.getHomeArticles()
         } else {
             viewModel.onNoInternet()
         }
-        viewModel.getSavedNews()
+        viewModel.getSavedArticles()
 
         setContent {
             MohitEkaCareAssignmentTheme {
@@ -76,13 +79,13 @@ fun MyApp(viewModel: NewsViewModel) {
                         onClick = {
                             selectedIndex = index
                             if (index == 1) {
-                                navController.navigate(SavedScreen) {
-                                    popUpTo(HomeScreen) { inclusive = true }
+                                navController.navigate(SavedRoute) {
+                                    popUpTo(HomeRoute) { inclusive = true }
                                     launchSingleTop = true
                                 }
                             } else {
-                                navController.navigate(HomeScreen) {
-                                    popUpTo(SavedScreen) { inclusive = true }
+                                navController.navigate(HomeRoute) {
+                                    popUpTo(SavedRoute) { inclusive = true }
                                     launchSingleTop = true
                                 }
                             }
@@ -99,18 +102,27 @@ fun MyApp(viewModel: NewsViewModel) {
         },
         modifier = Modifier.fillMaxSize()
     ) { innerPadding ->
-        NavHost(navController = navController, startDestination = HomeScreen, modifier = Modifier.padding(innerPadding)) {
-            composable<HomeScreen> {
-                HomeScreen(navController, viewModel)
+        NavHost(navController = navController, startDestination = HomeRoute, modifier = Modifier.padding(innerPadding)) {
+            composable<HomeRoute> {
+                HomeScreen(
+                    navController = navController,
+                    viewModel = viewModel
+                )
             }
-            composable<SavedScreen> {
-                SavedScreen(navController, viewModel)
+            composable<SavedRoute> {
+                SavedScreen(
+                    navController = navController,
+                    viewModel = viewModel
+                )
             }
-            composable<WebViewScreen> {
-                val args = it.toRoute<WebViewScreen>()
+            composable<WebViewRoute>(
+                typeMap = mapOf(
+                    typeOf<Article>() to CustomNavType.ArticleType
+                )
+            ) {
+                val args = it.toRoute<WebViewRoute>()
                 WebViewScreen(
                     article = args.article,
-                    isSaved = args.isSaved,
                     viewModel = viewModel
                 )
             }

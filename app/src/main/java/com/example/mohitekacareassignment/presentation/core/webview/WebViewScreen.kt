@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -19,10 +18,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
+import com.example.mohitekacareassignment.domain.model.Article
 import com.example.mohitekacareassignment.presentation.core.NewsViewModel
 
 @Composable
-fun WebViewScreen(article: String, isSaved: Boolean, viewModel: NewsViewModel) {
+fun WebViewScreen(article: Article, viewModel: NewsViewModel) {
     ConstraintLayout {
 
         val (ctaSave) = createRefs()
@@ -32,7 +32,7 @@ fun WebViewScreen(article: String, isSaved: Boolean, viewModel: NewsViewModel) {
                 WebView(context).apply {
                     settings.javaScriptEnabled = true
                     webViewClient = WebViewClient()
-                    loadUrl(article)
+                    loadUrl(article.url)
                 }
             },
             modifier = Modifier.fillMaxSize()
@@ -51,8 +51,9 @@ fun WebViewScreen(article: String, isSaved: Boolean, viewModel: NewsViewModel) {
                 }
         ) {
             Icon(
-                imageVector = if (isSaved) Icons.Filled.Star else Icons.Outlined.Star,
+                imageVector = Icons.Filled.Star,
                 contentDescription = "Save",
+                tint = if (article.isSaved) Color.Yellow else Color.Gray,
                 modifier = Modifier.padding(5.dp)
             )
         }

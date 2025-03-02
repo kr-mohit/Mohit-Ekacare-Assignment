@@ -1,6 +1,5 @@
 package com.example.mohitekacareassignment.presentation.core
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,30 +16,46 @@ class NewsViewModel @Inject constructor(
     private val newsRepository: NewsRepository
 ): ViewModel(){
 
-    private val _articles = MutableLiveData<Response<List<Article>>>()
-    val articles: LiveData<Response<List<Article>>> = _articles
+    private val _articlesResponse = MutableLiveData<Response<List<Article>>>()
+    val articlesResponse: LiveData<Response<List<Article>>> = _articlesResponse
+
+    private val _articles = MutableLiveData<List<Article>>()
+    val articles: LiveData<List<Article>> = _articles
 
     private val _savedArticles = MutableLiveData<Response<List<Article>>>()
     val savedArticles: LiveData<Response<List<Article>>> = _savedArticles
 
-    fun getHomeNews() = viewModelScope.launch {
-        _articles.postValue(Response.Loading())
+    fun getHomeArticles() = viewModelScope.launch {
+        _articlesResponse.postValue(Response.Loading())
         newsRepository.getHomeNews().also {
-            _articles.postValue(it)
+            _articlesResponse.postValue(it)
         }
     }
 
-    fun getSavedNews() = viewModelScope.launch {
-        _savedArticles.postValue(Response.Loading())
-        _savedArticles.postValue(Response.Success(emptyList()))
+    fun onHomeArticlesSuccess(articles: List<Article>) {
+        articles.forEach { article ->
+            article.isSaved = _savedArticles.value?.data?.any { it.url == article.url } ?: false
+        }
+        _articles.postValue(articles)
     }
 
-    fun onSaveClick(article: String) {
-        Log.d("mohit", "SaveClick")
-        getSavedNews()
+    fun getSavedArticles() = viewModelScope.launch {
+        _savedArticles.postValue(Response.Loading())
+        newsRepository.getAllSavedNews().also {
+            _savedArticles.postValue(it)
+        }
+    }
+
+    fun onSaveClick(article: Article) = viewModelScope.launch {
+        if (article.isSaved) {
+            newsRepository.deleteArticle(article)
+        } else {
+            newsRepository.saveArticle(article)
+        }
+        getSavedArticles()
     }
 
     fun onNoInternet() {
-        _articles.postValue(Response.Error("No Internet\nProceed to Saved Articles"))
+        _articlesResponse.postValue(Response.Error("No Internet\nProceed to Saved Articles"))
     }
 }

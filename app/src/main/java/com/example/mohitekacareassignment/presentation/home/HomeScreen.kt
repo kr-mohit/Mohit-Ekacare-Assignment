@@ -17,13 +17,14 @@ import com.example.mohitekacareassignment.presentation.common.CenterLoader
 import com.example.mohitekacareassignment.presentation.common.CenterText
 import com.example.mohitekacareassignment.presentation.common.NewsItem
 import com.example.mohitekacareassignment.presentation.core.NewsViewModel
-import com.example.mohitekacareassignment.presentation.core.WebViewScreen
+import com.example.mohitekacareassignment.presentation.core.WebViewRoute
 import com.example.mohitekacareassignment.utils.Response
 
 @Composable
 fun HomeScreen(navController: NavHostController, viewModel: NewsViewModel, modifier: Modifier = Modifier) {
 
-    val response = viewModel.articles.observeAsState()
+    val response = viewModel.articlesResponse.observeAsState()
+    val articlesToShow = viewModel.articles.observeAsState()
 
     when(response.value) {
         is Response.Error -> {
@@ -49,27 +50,30 @@ fun HomeScreen(navController: NavHostController, viewModel: NewsViewModel, modif
                 }
                 return
             }
-            Column(
-                modifier = modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                LazyColumn(
-                    modifier = modifier
-                        .fillMaxSize()
-                        .padding(20.dp, 0.dp),
-                ) {
-                    items(articles) { article ->
-                        NewsItem(
-                            newsArticle = article,
-                            onReadMoreClick = { newsArticle ->
-                                navController.navigate(WebViewScreen(newsArticle.url, newsArticle.isSaved))
-                            }
-                        )
-                    }
-                }
-            }
+            viewModel.onHomeArticlesSuccess(articles)
         }
         null -> {}
+    }
+
+
+    Column(
+        modifier = modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        LazyColumn(
+            modifier = modifier
+                .fillMaxSize()
+                .padding(20.dp, 0.dp),
+        ) {
+            items(articlesToShow.value ?: emptyList()) { article ->
+                NewsItem(
+                    newsArticle = article,
+                    onReadMoreClick = { newsArticle ->
+                        navController.navigate(WebViewRoute(newsArticle))
+                    }
+                )
+            }
+        }
     }
 }

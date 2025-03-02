@@ -1,15 +1,15 @@
 package com.example.mohitekacareassignment.presentation.core
 
+import com.example.mohitekacareassignment.domain.model.Article
 import kotlinx.serialization.Serializable
 
 @Serializable
-object HomeScreen
+object HomeRoute
 
 @Serializable
-object SavedScreen
+object SavedRoute
 
 @Serializable
-data class WebViewScreen(
-    val article: String,
-    val isSaved: Boolean
+data class WebViewRoute(
+    val article: Article
 )
