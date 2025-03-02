@@ -46,6 +46,7 @@ class MainActivity : ComponentActivity() {
         } else {
             viewModel.onNoInternet()
         }
+        viewModel.getSavedNews()
 
         setContent {
             MohitEkaCareAssignmentTheme {
@@ -103,7 +104,7 @@ fun MyApp(viewModel: NewsViewModel) {
                 HomeScreen(navController, viewModel)
             }
             composable<SavedScreen> {
-                SavedScreen()
+                SavedScreen(navController, viewModel)
             }
             composable<WebViewScreen> {
                 val args = it.toRoute<WebViewScreen>()
